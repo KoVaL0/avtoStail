@@ -67,20 +67,23 @@ const SingleProduct = ({product, onStarClick, star}) => {
           {product && product.ratings && product.ratings.length > 0 ? (
             showAverage(product)
           ) : (
-            <StarRating
-              name={_id}
-              numberOfStars={5}
-              starDimension="40px"
-              starSpacing="2px"
-              rating={star}
-              changeRating={onStarClick}
-              isSelectable={true}
-              starRatedColor="red"
-            />
+            <div>
+              <StarRating
+                name={_id}
+                numberOfStars={5}
+                starDimension="16px"
+                starSpacing="2px"
+                rating={star}
+                changeRating={onStarClick}
+                isSelectable={true}
+                starRatedColor="red"
+              /> {" "} 0 из 5
+            </div>
           )}
           {images && images.length ? (
             <Carousel showArrows={true} autoPlay infiniteLoop>
-              {images && images.map((i, id) => <img alt={"image"} src={i.url} key={id} style={{maxHeight: "350px", objectFit: "contain"}}/>)}
+              {images && images.map((i, id) => <img alt={"image"} src={i.url} key={id}
+                                                    style={{maxHeight: "350px", objectFit: "contain"}}/>)}
             </Carousel>
           ) : (
             <Card cover={<img src={noImg} alt={"image"} className="mb-3 card-image"/>}></Card>
