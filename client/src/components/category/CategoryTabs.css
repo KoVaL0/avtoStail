@@ -23,8 +23,18 @@
 }
 
 .tab-icon {
-    margin-bottom: auto;
     top: 0;
     padding: 20px 0;
     height: 80px;
+}
+
+.card-container p {
+    margin: 0;
+}
+.card-container > .ant-tabs-card .ant-tabs-content {
+    margin-top: -16px;
+}
+.card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
+    padding: 16px;
+    background: #fff;
 }

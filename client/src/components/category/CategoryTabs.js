@@ -66,7 +66,7 @@ const showCategories = () => (
       tab={
         <div className={"tab"} onClick={() => handlerClickTabs(id)}>
           <img className={"tab-icon"} src={category?.images[0]?.url || icon} alt={"icon"}/>
-          <p style={{fontSize: "16px"}}>{category.name}</p>
+          <p style={{fontSize: "16px", height: "55px"}}>{category.name}</p>
         </div>
       }
       key={id}
@@ -78,6 +78,7 @@ const showCategories = () => (
   )));
 
 return (
+  <div className="card-container">
   <Tabs
     type="card"
     activeKey={activeKey}
@@ -93,6 +94,7 @@ return (
       showCategories()
     )}
   </Tabs>
+  </div>
 )
 }
 
