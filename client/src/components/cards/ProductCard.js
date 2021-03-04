@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Card, Tooltip} from "antd";
 import {EyeOutlined, ShoppingCartOutlined} from "@ant-design/icons";
 import noImg from "../../images/noImg.jpg";
@@ -12,10 +12,15 @@ const {Meta} = Card;
 
 const ProductCard = ({product}) => {
   const [tooltip, setTooltip] = useState("Click to add");
+  const [color, setColor] = useState("red");
 
   // redux
   const {user, cart} = useSelector((state) => ({...state}));
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (quantity === "Есть в наличии") setColor("green")
+  },[])
 
   const handleAddToCart = () => {
     // create cart array
@@ -51,37 +56,27 @@ const ProductCard = ({product}) => {
     }
   };
 
-  const handlerLink = () => {
-
-  }
 
   // destructure
-  const {images, title, description, slug, price} = product;
+  const {images, title, description, slug, price, quantity} = product;
+
+
   return (
     <>
       <Card
-        title={product && product.ratings && product.ratings.length > 0 ? (
-          showAverage(product)
-        ) : (
-          <div>
-            <StarRating
-              numberOfStars={5}
-              starDimension="20px"
-              starSpacing="2px"
-              starRatedColor="red"
-              editing={false}
-            />
-          </div>
-        )}
-        size="small"
-        cover={
-            <img
-              alt={"image-product"}
-              src={images && images.length ? images[0].url : noImg}
-              style={{height: "150px", objectFit: "contain"}}
-              className="p-1"
-            />
+        title={
+          <NavLink to={`/product/${slug}`}>
+            <div style={{display: "flex", justifyContent: "center", objectFit: "contain"}}>
+              <img
+                alt={"image-product"}
+                src={images && images.length ? images[0].url : noImg}
+                style={{height: "150px", objectFit: "contain"}}
+                className="p-1"
+              />
+            </div>
+          </NavLink>
         }
+        size="small"
         actions={[
           <NavLink to={`/product/${slug}`}>
             <EyeOutlined className="text-warning"/> <br/> Показать товар
@@ -89,17 +84,38 @@ const ProductCard = ({product}) => {
           <Tooltip title={tooltip}>
             <a onClick={handleAddToCart} disabled={product.quantity < 1}>
               <ShoppingCartOutlined className="text-danger"/> <br/>
-              {product.quantity < 1 ? "Нет на складе" : "Добавьте товар в корзину"}
+              {product.quantity < 1 ? "Нет на складе" : "Добавить в корзину"}
             </a>
           </Tooltip>,
         ]}
       >
-        <NavLink to={`/product/${slug}`}>
-          <Meta
-            title={`${title && title.substring(0, 24)}... - ${price}р`}
-            description={`${description && description.substring(0, 36)}...`}
-          />
-        </NavLink>
+        <div style={{padding: "10px"}}>
+          <NavLink to={`/product/${slug}`}>
+            <Meta
+              title={title}
+            />
+          </NavLink>
+          {product && product.ratings && product.ratings.length > 0 ? (
+            <div style={{padding: "10px 0"}}>
+              {showAverage(product)}
+            </div>
+          ) : (
+            <div style={{padding: "10px 0"}}>
+              <StarRating
+                numberOfStars={5}
+                starDimension="16px"
+                starSpacing="2px"
+                starRatedColor="red"
+                editing={false}
+              />
+              {" "} 0 из 5
+            </div>
+          )}
+          <NavLink to={`/product/${slug}`}>
+            <h5>{`Цена - ${price}р`}</h5>
+            <p style={{margin: 0, color: color, fontWeight: "bold"}}>{quantity}</p>
+          </NavLink>
+        </div>
       </Card>
     </>
   );

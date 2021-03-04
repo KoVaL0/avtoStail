@@ -22,13 +22,13 @@ export const showAverage = (p) => {
       <div>
         <span>
           <StarRating
-            starDimension="20px"
+            starDimension="16px"
             starSpacing="2px"
             starRatedColor="red"
             rating={result}
             editing={false}
           />{" "}
-          ({p.ratings.length})
+          {5 - p.ratings.length} из 5
         </span>
       </div>
     );
