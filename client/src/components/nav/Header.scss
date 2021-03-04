@@ -1,0 +1,66 @@
+
+.header {
+  display: flex;
+  position: fixed;
+  background: #fff;
+  height: 70px;
+  z-index: 1;
+  width: 100%;
+  &__title {
+    display: flex;
+    margin: auto 40px;
+    align-items: center;
+    .logo {
+      font-size: 32px;
+      color: #761414;
+      margin: auto 10px;
+    }
+  }
+
+  .menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .nav {
+      display: flex;
+      justify-content: space-around;
+      width: 200px;
+      &__link {
+        font-size: 16px;
+        padding-right: 25px;
+      }
+    }
+
+    .body {
+      display: flex;
+      margin-left: auto;
+      &__items {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      &__contacts {
+        font-size: 16px;
+        margin-right: 20px;
+        .phone-number {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          line-height: 20px;
+        }
+        .timetable {
+          line-height: 20px;
+        }
+      }
+      .item {
+        margin-right: 20px;
+      }
+    }
+
+    .search {
+      margin-left: 10px;
+    }
+  }
+}
+
