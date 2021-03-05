@@ -7,12 +7,12 @@ const Orders = ({ orders, handleStatusChange }) => {
     <table className="table table-bordered">
       <thead className="thead-light">
         <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Price</th>
-          <th scope="col">Brand</th>
-          <th scope="col">Color</th>
-          <th scope="col">Count</th>
-          <th scope="col">Shipping</th>
+          <th scope="col">Название</th>
+          <th scope="col">Цена</th>
+          <th scope="col">Изготовитель</th>
+          <th scope="col">Артикул</th>
+          <th scope="col">Количество</th>
+          <th scope="col">Наличие</th>
         </tr>
       </thead>
 
@@ -24,10 +24,10 @@ const Orders = ({ orders, handleStatusChange }) => {
             </td>
             <td>{p.product.price}</td>
             <td>{p.product.brand}</td>
-            <td>{p.color}</td>
+            <td>{p.article}</td>
             <td>{p.count}</td>
             <td>
-              {p.product.shipping === "Yes" ? (
+              {p.product.quantity === "Есть в наличии" ? (
                 <CheckCircleOutlined style={{ color: "green" }} />
               ) : (
                 <CloseCircleOutlined style={{ color: "red" }} />

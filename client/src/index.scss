@@ -10,3 +10,16 @@
 .pointer {
   cursor: pointer;
 }
+
+.form-color{
+  position: relative;
+  .form-control::before {
+    content: "";
+    position: relative;
+    float: left;
+    margin: 2px 5px 0 0;
+    width: 15px;
+    height: 15px;
+    background-color: red;
+  }
+}

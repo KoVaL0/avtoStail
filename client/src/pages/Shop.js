@@ -31,7 +31,7 @@ const Shop = () => {
   const [sub, setSub] = useState("");
   const [brands, setBrands] = useState(StateProducts.brands);
   const [brand, setBrand] = useState("");
-  const [colors, setColors] = useState([StateProducts.colors.LADA]);
+  const [colors, setColors] = useState([...StateProducts.colors]);
   const [color, setColor] = useState("");
   const [shipping, setShipping] = useState("");
 
@@ -235,18 +235,26 @@ const Shop = () => {
 
   // 8. show products based on color
   const showColors = () =>
-    colors.map((c, id) => (
-      <Radio
-        key={id}
-        value={c}
-        name={c}
-        checked={c === color}
-        onChange={handleColor}
-        className="pb-1 pl-4 pr-4"
-      >
-        {c}
-      </Radio>
-    ));
+    <div className={"form-color"} style={{margin: "20px 0 15px 20px", border: "2px solid #c7c7c7", borderRadius: "5px", width: "100%"}}>
+      <select style={{paddingLeft: "10px"}} name="color" className="form-control" onChange={handleColor}>
+        <option>Пожалуйста выберите</option>
+        {colors.map((c, id) => (
+          <optgroup key={id} label={Object.keys(c)[0]}>
+            {
+              Object.values(c)
+                .map((obj) => (
+                  obj.map((item, id) => (
+                    <option key={id} value={item}>
+                      {item}
+                    </option>
+                  ))
+                ))
+            }
+          </optgroup>
+        ))}
+      </select>
+    </div>
+
 
   const handleColor = (e) => {
     setSub("");
@@ -335,6 +343,34 @@ const Shop = () => {
               </div>
             </SubMenu>
 
+            {/* brands */}
+            <SubMenu
+              key="5"
+              title={
+                <span className="h6">
+                  <DownSquareOutlined/> Брэнд
+                </span>
+              }
+            >
+              <div style={{maringTop: "-10px"}} className="pr-5">
+                {showBrands()}
+              </div>
+            </SubMenu>
+
+            {/* colors */}
+            <SubMenu
+              key="6"
+              title={
+                <span className="h6">
+                  <DownSquareOutlined/> Цвет
+                </span>
+              }
+            >
+              <div style={{maringTop: "-10px"}} className="pr-5">
+                {showColors()}
+              </div>
+            </SubMenu>
+
             {/* category */}
             <SubMenu
               key="2"
@@ -372,34 +408,6 @@ const Shop = () => {
             {/*    {showSubs()}*/}
             {/*  </div>*/}
             {/*</SubMenu>*/}
-
-            {/* brands */}
-            <SubMenu
-              key="5"
-              title={
-                <span className="h6">
-                  <DownSquareOutlined/> Брэнд
-                </span>
-              }
-            >
-              <div style={{maringTop: "-10px"}} className="pr-5">
-                {showBrands()}
-              </div>
-            </SubMenu>
-
-            {/* colors */}
-            <SubMenu
-              key="6"
-              title={
-                <span className="h6">
-                  <DownSquareOutlined/> Цвет
-                </span>
-              }
-            >
-              <div style={{maringTop: "-10px"}} className="pr-5">
-                {showColors()}
-              </div>
-            </SubMenu>
 
             {/* shipping */}
             {/*<SubMenu*/}

@@ -103,28 +103,8 @@ const ProductCardInCheckout = ({ p }) => {
           </div>
         </td>
         <td>{p.title}</td>
-        <td>${p.price}</td>
-        <td>{p.brand}</td>
-        <td>
-          <select
-            onChange={handleColorChange}
-            name="color"
-            className="form-control"
-          >
-            {p.color ? (
-              <option value={p.color}>{p.color}</option>
-            ) : (
-              <option>Выбрано</option>
-            )}
-            {colors
-              .filter((c) => c !== p.color)
-              .map((c, id) => (
-                <option key={id} value={c}>
-                  {c}
-                </option>
-              ))}
-          </select>
-        </td>
+        <td>{p.article}</td>
+        <td>{p.price}р</td>
         <td className="text-center">
           <input
             type="number"
@@ -134,7 +114,7 @@ const ProductCardInCheckout = ({ p }) => {
           />
         </td>
         <td className="text-center">
-          {p.shipping === "Yes" ? (
+          {p.quantity === "Есть в наличии" ? (
             <CheckCircleOutlined className="text-success" />
           ) : (
             <CloseCircleOutlined className="text-danger" />

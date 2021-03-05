@@ -5,10 +5,11 @@ import {
   getUserCart,
   emptyUserCart,
   saveUserAddress,
-  applyCoupon,
+  applyCoupon, createOrder,
 } from "../functions/user";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
 
 const Checkout = ({ history }) => {
   const [products, setProducts] = useState([]);
@@ -19,17 +20,63 @@ const Checkout = ({ history }) => {
   // discount price
   const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
   const [discountError, setDiscountError] = useState("");
+  const [clientSecret, setClientSecret] = useState("");
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
+
 
   useEffect(() => {
     getUserCart(user.token).then((res) => {
       console.log("user cart res", JSON.stringify(res.data, null, 4));
       setProducts(res.data.products);
       setTotal(res.data.cartTotal);
+      setClientSecret(res.data.clientSecret);
     });
   }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      paymentIntent: {
+        id: user.email,
+        address: address,
+        amount: total,
+        client_secret: "pi_1DnXOH2eZvKYlo2CtvNgBO1k_secret_FI3WoslOqGNcnFOpMQCVjha4H",
+        created: new Date().toLocaleDateString(),
+      }
+    }
+
+    if (payload.error) {
+      toast.error(payload.error)
+    } else {
+      // here you get result after successful payment
+      // create order and save in database for admin to process
+      createOrder(payload, user.token).then((res) => {
+        if (res.data.ok) {
+          // empty cart from local storage
+          if (typeof window !== "undefined") localStorage.removeItem("cart");
+          // empty cart from redux
+          dispatch({
+            type: "ADD_TO_CART",
+            payload: [],
+          });
+          // reset coupon to false
+          dispatch({
+            type: "COUPON_APPLIED",
+            payload: false,
+          });
+          // empty cart from database
+          emptyUserCart(user.token);
+        }
+      });
+      // empty user cart from redux store and local storage
+      console.log(JSON.stringify(payload, null, 4));
+      history.push("/payment")
+    }
+  };
+
 
   const emptyCart = () => {
     // remove from local storage
@@ -89,7 +136,7 @@ const Checkout = ({ history }) => {
     <>
       <ReactQuill theme="snow" value={address} onChange={setAddress} />
       <button className="btn btn-primary mt-2" onClick={saveAddressToDb}>
-        Save
+        Потвердить
       </button>
     </>
   );
@@ -124,41 +171,41 @@ const Checkout = ({ history }) => {
   return (
     <div className="row">
       <div className="col-md-6">
-        <h4>Delivery Address</h4>
+        <h4>Адрес доставки</h4>
         <br />
         <br />
         {showAddress()}
         <hr />
-        <h4>Got Coupon?</h4>
-        <br />
-        {showApplyCoupon()}
-        <br />
-        {discountError && <p className="bg-danger p-2">{discountError}</p>}
+        {/*<h4>Got Coupon?</h4>*/}
+        {/*<br />*/}
+        {/*{showApplyCoupon()}*/}
+        {/*<br />*/}
+        {/*{discountError && <p className="bg-danger p-2">{discountError}</p>}*/}
       </div>
 
       <div className="col-md-6">
-        <h4>Order Summary</h4>
+        <h4>Информация о заказе</h4>
         <hr />
-        <p>Products {products.length}</p>
+        <p>Товаров {products.length}</p>
         <hr />
         {showProductSummary()}
         <hr />
-        <p>Cart Total: {total}</p>
+        <p>Итого: {total}</p>
 
-        {totalAfterDiscount > 0 && (
-          <p className="bg-success p-2">
-            Discount Applied: Total Payable: ${totalAfterDiscount}
-          </p>
-        )}
+        {/*{totalAfterDiscount > 0 && (*/}
+        {/*  <p className="bg-success p-2">*/}
+        {/*    Discount Applied: Total Payable: ${totalAfterDiscount}*/}
+        {/*  </p>*/}
+        {/*)}*/}
 
         <div className="row">
           <div className="col-md-6">
             <button
               className="btn btn-primary"
               disabled={!addressSaved || !products.length}
-              onClick={() => history.push("/payment")}
+              onClick={(e) => handleSubmit(e)}
             >
-              Place Order
+              Оставить заявку
             </button>
           </div>
 
@@ -166,9 +213,9 @@ const Checkout = ({ history }) => {
             <button
               disabled={!products.length}
               onClick={emptyCart}
-              className="btn btn-primary"
+              className="btn btn-danger"
             >
-              Empty Cart
+              Очистить корзину
             </button>
           </div>
         </div>

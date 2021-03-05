@@ -26,6 +26,11 @@ const AdminNav = () => {
         inlineCollapsed={collapsed}
       >
         <Menu.Item icon={<FileAddOutlined/>}>
+          <NavLink to="/admin/dashboard">
+            Просмотреть заказы
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item icon={<FileAddOutlined/>}>
           <NavLink to="/admin/product">
             Добавить товар
           </NavLink>

@@ -28,14 +28,13 @@ const Cart = ({ history }) => {
     <table className="table table-bordered">
       <thead className="thead-light">
         <tr>
-          <th scope="col">Image</th>
-          <th scope="col">Title</th>
-          <th scope="col">Price</th>
-          <th scope="col">Brand</th>
-          <th scope="col">Color</th>
-          <th scope="col">Count</th>
-          <th scope="col">Shipping</th>
-          <th scope="col">Remove</th>
+          <th scope="col">Изображение</th>
+          <th scope="col">Название</th>
+          <th scope="col">Артикул</th>
+          <th scope="col">Цена</th>
+          <th scope="col">Количество</th>
+          <th scope="col">Наличие</th>
+          <th scope="col">Удалить</th>
         </tr>
       </thead>
 
@@ -49,29 +48,29 @@ const Cart = ({ history }) => {
     <div className="container-fluid pt-2">
       <div className="row">
         <div className="col-md-8">
-          <h4>Cart / {cart.length} Product</h4>
+          <h4>Корзина / {cart.length} товара</h4>
 
           {!cart.length ? (
             <p>
-              No products in cart. <Link to="/shop">Continue Shopping.</Link>
+              Нет товаров в корзине! <Link to="/shop">Вернуться к каталогу</Link>
             </p>
           ) : (
             showCartItems()
           )}
         </div>
         <div className="col-md-4">
-          <h4>Order Summary</h4>
+          <h4>Информация о заказе</h4>
           <hr />
-          <p>Products</p>
+          <p>Товары:</p>
           {cart.map((c, i) => (
             <div key={i}>
               <p>
-                {c.title} x {c.count} = ${c.price * c.count}
+                {c.title} x {c.count} = {c.price * c.count}р
               </p>
             </div>
           ))}
           <hr />
-          Total: <b>${getTotal()}</b>
+          Итого: <b>{getTotal()}р</b>
           <hr />
           {user ? (
             <button
@@ -79,7 +78,7 @@ const Cart = ({ history }) => {
               className="btn btn-sm btn-primary mt-2"
               disabled={!cart.length}
             >
-              Proceed to Checkout
+              Перейти к оформлению заказа
             </button>
           ) : (
             <button className="btn btn-sm btn-primary mt-2">
@@ -89,7 +88,7 @@ const Cart = ({ history }) => {
                   state: { from: "cart" },
                 }}
               >
-                Login to Checkout
+                Зайдите в аккаунт
               </Link>
             </button>
           )}
